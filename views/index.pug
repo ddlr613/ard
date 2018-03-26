@@ -1,0 +1,116 @@
+doctype html
+html
+  title ARDUINO
+  meta(charset='UTF-8')
+  meta(name='viewport', content='width=device-width, initial-scale=1')
+  link(rel='stylesheet', href='/css/style.css')
+  link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Raleway')
+  link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap.css')
+  style.
+    body,h1,h5 {font-family: "Raleway", sans-serif}
+    body, html {height: 100%}
+    .bgimg {
+    background-image: url('/images/bg4.jpg');
+    min-height: 100%;
+    background-position: center;
+    background-size: cover;
+    }
+  body
+    .bgimg.w3-display-container.w3-text-white
+      .w3-display-middle.w3-jumbo
+        if user
+            p Welcome, #{user.name} #{user.lastname}!
+        else
+            p W E L C O M E!
+      .w3-display-topleft.w3-container.w3-xlarge
+        if !user
+            p
+            button.w3-button.w3-black(onclick="document.getElementById('menu').style.display='block'") Login
+            p
+            button.w3-button.w3-black(onclick="document.getElementById('contact').style.display='block'") Register
+        else
+            p
+            button.w3-button.w3-black(onclick="document.getElementById('simulate').style.display='block'") Simulate
+            p
+            button.w3-button.w3-black(onclick="document.getElementById('logs').style.display='block'") Logs
+            br
+            br
+            form(action='/logout')
+                button.w3-button.w3-black(onclick="document.getElementById('#').style.display='block'") Logout
+      .w3-display-bottomleft.w3-container
+    // Menu Modal
+    #menu.w3-modal
+      .w3-modal-content.w3-animate-zoom
+        .w3-container.w3-black.w3-display-container
+          span.w3-button.w3-display-topright.w3-large(onclick="document.getElementById('menu').style.display='none'") x
+          h1 User Login
+        .w3-container
+          form(method='POST', action='/users/login')
+            br
+            h5
+              b Username
+            input.form-control(type='text', name='username', placeholder='Username')
+            br
+            h5
+              b Password
+            input.form-control(type='password', name='password', placeholder='Password')
+            br
+            br
+            button.btn.btn-default(type='submit') LOGIN
+            br
+            br
+    // Contact Modal
+    #contact.w3-modal
+      .w3-modal-content.w3-animate-zoom
+        .w3-container.w3-black
+          span.w3-button.w3-display-topright.w3-large(onclick="document.getElementById('contact').style.display='none'") x
+          h1 Register
+        .w3-container
+          br
+          form(method="POST", action='/users/register')
+            p
+              input.w3-input.w3-padding-16.w3-border(type='text', placeholder='First Name', required='', name='name')
+            p
+              input.w3-input.w3-padding-16.w3-border(type='text', placeholder='Last Name', required='', name='lastname')
+            p
+              input.w3-input.w3-padding-16.w3-border(type='text', placeholder='Username', required='', name='username')
+            p
+              input.w3-input.w3-padding-16.w3-border(type='password', placeholder='Password', required='', name='password')
+            p
+              button.w3-button(type='submit') SUBMIT
+    // Simulate Modal
+    #simulate.w3-modal
+      .w3-modal-content.w3-animate-zoom
+        .w3-container.w3-black
+          span.w3-button.w3-display-topright.w3-large(onclick="document.getElementById('simulate').style.display='none'") x
+          h1 Simulate
+          h4 (To override, insert new set of values and press ON/OVERRIDE again).
+        .w3-container
+          br
+          form(method="POST", action='/insertLogs')
+            p
+              input.w3-input.w3-padding-16.w3-border(type='number', placeholder='Red', name='red')
+            p
+              input.w3-input.w3-padding-16.w3-border(type='number', placeholder='Yellow', name='yellow')
+            p
+              input.w3-input.w3-padding-16.w3-border(type='number', placeholder='Green', name='green')
+            p
+              button.w3-button(type='submit' class='btn btn-success' value="1") ON/OVERRIDE
+          .w3-container
+          br
+          form(method="POST", action='/offAll')
+              button.w3-button(type='submit' name='offButton' class='btn btn-danger pull-right' align='right' value="0") OFF
+              
+    // Logs Modal
+    #logs.w3-modal
+      .w3-modal-content.w3-animate-zoom
+        .w3-container.w3-black
+          span.w3-button.w3-display-topright.w3-large(onclick="document.getElementById('logs').style.display='none'") x
+          h1 Logs
+        .w3-container
+            ul.list-group
+                each result in logs
+                    li.list-group-item
+                        p= "User "+result.username+" inputted "+result.red/1000+" for red - "+result.yellow/1000+" for yellow - "+result.green/1000+" for green at "+result.date+" "+result.time
+            
+    
